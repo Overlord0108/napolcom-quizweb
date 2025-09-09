@@ -92,7 +92,7 @@
       }
         results.sections.forEach((section) => {
           let row = table.insertRow();
-          row.insertCell(0).innerText = section.section;
+          row.insertCell(0).innerText = formatSectionName(section.section);
           row.insertCell(1).innerText = section.correct;
           row.insertCell(2).innerText = section.total;
           row.insertCell(3).innerText =
@@ -109,4 +109,5 @@
     </script>
   </body>
 </html>
+
 
