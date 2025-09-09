@@ -74,7 +74,22 @@
 
       if (results) {
         const table = document.getElementById("resultsTable");
-
+        function formatSectionName(section) {
+        switch (section) {
+          case "vocabulary":
+            return "Vocabulary";
+          case "grammar":
+            return "Grammar & Usage";
+          case "spell":
+            return "Spelling and Word Recognition";
+          case "sentence":
+            return "Sentence Completion";
+          case "comprehension":
+            return "Reading Comprehension";
+          default:
+            return section.charAt(0).toUpperCase() + section.slice(1);
+        }
+      }
         results.sections.forEach((section) => {
           let row = table.insertRow();
           row.insertCell(0).innerText = section.section;
@@ -94,3 +109,4 @@
     </script>
   </body>
 </html>
+
