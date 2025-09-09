@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Verify Access</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background: #f4f6f9;
+      }
+      .verify-box {
+        background: white;
+        padding: 2em;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 360px;
+      }
+      input,
+      button {
+        width: 300px;
+        padding: 10px;
+        margin: 0.5em 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        background: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="verify-box">
+      <h2>Enter Access Code</h2>
+      <form id="verifyForm">
+        <input
+          type="email"
+          id="verifyEmail"
+          placeholder="Your Email"
+          required
+        />
+        <input type="text" id="verifyCode" placeholder="Access Code" required />
+        <button type="submit">Verify & Start Quiz</button>
+      </form>
+    </div>
+
+    <script>
+      document
+        .getElementById("verifyForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("verifyEmail").value.trim();
+          const code = document.getElementById("verifyCode").value.trim();
+
+          fetch(
+            "https://script.google.com/macros/s/AKfycbxH6TA5pwnwy1JnqhrCW7FSJMK7-CWzv1OXSXBvs6fw0TY1AXR7015oc-vEwaf4FfwOZw/exec" +
+              "?email=" +
+              encodeURIComponent(email) +
+              "&code=" +
+              encodeURIComponent(code)
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.result === "valid") {
+                localStorage.setItem("userName", data.userName);
+                localStorage.setItem("userEmail", email);
+                window.location.href = "napolcom_quiz_verbal.html";
+              } else {
+                alert("❌ Incorrect email or access code. Please try again.");
+              }
+            })
+            .catch((err) => alert("Fetch Error: " + err));
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Exam-Style Quiz</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 1em auto;
+      }
+      h2 {
+        margin-top: 2em;
+      }
+      .question {
+        margin-bottom: 1em;
+        padding: 1em;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+      .options {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+      }
+      .option {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .option input[type="radio"] {
+        margin-right: 0.5em;
+      }
+      .incorrect {
+        background: #f8d7da;
+      }
+      .correct {
+        background: #d4edda;
+      }
+      #results {
+        margin-top: 2em;
+        border-top: 2px solid #333;
+        padding-top: 1em;
+      }
+      button {
+        padding: 0.5em 1.2em;
+        font-size: 1em;
+        margin-top: 1em;
+      }
+      #timer {
+        font-size: 18px;
+        font-weight: bold;
+        color: #fff;
+        background: #e63946;
+        padding: 6px 8px;
+        border-radius: 10px;
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+        font-family: Arial, sans-serif;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+
+      #top-bar {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-end;
+        gap: 10px;
+        z-index: 1000;
+        flex-wrap: nowrap;
+      }
+      #modeToggle {
+        padding: 6px 10px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        background: #444;
+        color: #fff;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+      body.dark-mode {
+        background-color: #1e1e1e;
+        color: #ddd;
+      }
+      body.dark-mode .question {
+        background: #2c2c2c;
+        color: #ddd;
+      }
+      body.dark-mode #modeToggle {
+        background: #ddd;
+        color: #000;
+      }
+      @media (max-width: 600px) {
+        #top-bar {
+          flex-direction: column;
+          align-items: flex-end;
+          gap: 6px;
+        }
+
+        #timer {
+          font-size: 16px;
+          padding: 5px 8px;
+        }
+
+        #modeToggle {
+          font-size: 13px;
+          padding: 5px 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Chapter 1 - Verbal Ability Mini Quiz</h1>
+
+    <div id="top-bar">
+      <div id="timer">40:00</div>
+      <button id="modeToggle">🌙 Dark Mode</button>
+    </div>
+
+    <form id="quizForm">
+      <h2>Examination Instructions:</h2>
+      <p>*This section tests your knowledge of Verbal Ability</p>
+      <p>
+        *Read each question carefully. Choose the
+        <b>best answer (A,B,C, or D)</b>
+      </p>
+      <p>*You are given <b>40 minutes</b> to complete <b>40 questions</b></p>
+      <p>*Mark all your answers. Avoid leaving your questions unanswered.</p>
+      <p>*Manage your time wisely</p>
+      <br />
+
+      <h2>Part I - Vocabulary (10 items)</h2>
+      <div class="question" data-section="vocabulary" data-correct="b">
+        <p>1. Choose the synonym of <i>brave</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc1" value="a" />cowardly</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc1" value="b" />fearless</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc1" value="c" />weak</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc1" value="d" />timid</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="c">
+        <p>2. Choose the antonym of <i>honest</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc2" value="a" />truthful</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc2" value="b" />sincere</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc2" value="c" />deceitful</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc2" value="d" />kind</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="b">
+        <p>3. What does the word <i>vital</i> mean?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc3" value="a" />unnecessary</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc3" value="b" />essential</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc3" value="c" />optional</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc3" value="d" />useless</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="b">
+        <p>4. Choose the synonym of <i>rapid</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc4" value="a" />slow</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc4" value="b" />quick</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc4" value="c" />lazy</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc4" value="d" />late</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="b">
+        <p>5. Choose the antonym of <i>ancient</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc5" value="a" />old</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc5" value="b" />modern</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc5" value="c" />historic</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc5" value="d" />antique</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="a">
+        <p>6. What is the meaning of <i>transparent</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc6" value="a" />clear</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc6" value="b" />hidden</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc6" value="c" />blocked</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc6" value="d" />dark</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="b">
+        <p>7. Choose the synonym of <i>assist</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc7" value="a" />refuse</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc7" value="b" />help</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc7" value="c" />ignore</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc7" value="d" />deny</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="a">
+        <p>8. The word <i>scarce</i> means:</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc8" value="a" />rare</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc8" value="b" />plenty</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc8" value="c" />abundant</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc8" value="d" />common</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="c">
+        <p>9. Choose the antonym of <i>victory</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc9" value="a" />success</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc9" value="b" />win</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc9" value="c" />loss</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc9" value="d" />triumph</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="vocabulary" data-correct="a">
+        <p>10. What is the synonym for <i>justice</i></p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="voc10" value="a" />fairness</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc10" value="b" />cruelty</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc10" value="c" />dishonesty</label
+          >
+          <label class="option"
+            ><input type="radio" name="voc10" value="d" />unfairness</label
+          >
+        </div>
+      </div>
+
+      <h2>Part II - Grammar & Usage (10 items)</h2>
+      <div class="question" data-section="grammar" data-correct="a">
+        <p>11. She __ going to the market now.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram11" value="a" />is</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram11" value="b" />are</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram11" value="c" />were</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram11" value="d" />be</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="c">
+        <p>12. He __ the letter yesterday.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram12" value="a" />write</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram12" value="b" />written</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram12" value="c" />wrote</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram12" value="d" />writing</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="a">
+        <p>13. Neither of the answers __ correct.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram13" value="a" />is</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram13" value="b" />are</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram13" value="c" />were</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram13" value="d" />have</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="c">
+        <p>14. The students __ excited about the trip.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram14" value="a" />is</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram14" value="b" />was</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram14" value="c" />are</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram14" value="d" />be</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="c">
+        <p>15.The dog __ loudly when strangers arrived.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram15" value="a" />bark</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram15" value="b" />barks</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram15" value="c" />barked</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram15" value="d" />barking</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="b">
+        <p>16. Every policeman __ to follow the law.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram16" value="a" />need</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram16" value="b" />needs</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram16" value="c" />needing</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram16" value="d" />needed</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="b">
+        <p>17. If I __ you, I would study harder.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram17" value="a" />was</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram17" value="b" />were</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram17" value="c" />am</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram17" value="d" />be</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="b">
+        <p>18. The suspect __ arrested last night.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram18" value="a" />were
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram18" value="b" />was</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram18" value="c" />are
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram18" value="d" />be</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="b">
+        <p>19. She __ already finished her work.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram19" value="a" />have
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram19" value="b" />has</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram19" value="c" />having
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram19" value="d" />had</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="grammar" data-correct="c">
+        <p>20. The children __ playing outside now.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="gram20" value="a" />is
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram20" value="b" />was</label
+          >
+          <label class="option"
+            ><input type="radio" name="gram20" value="c" />are
+          </label>
+          <label class="option"
+            ><input type="radio" name="gram20" value="d" />be</label
+          >
+        </div>
+      </div>
+
+      <h2>Part III - Spelling & Word Recognition (5 items)</h2>
+      <div class="question" data-section="spell" data-correct="c">
+        <p>21. Which is spelled correctly?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="spell21" value="a" />Accomodate</label
+          >
+          <label class="option"
+            ><input type="radio" name="spell21" value="b" />Acommodate</label
+          >
+          <label class="option"
+            ><input type="radio" name="spell21" value="c" />Accommodate
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell21" value="d" />Acomodete</label
+          >
+        </div>
+      </div>
+      <div class="question" data-section="spell" data-correct="b">
+        <p>22. Which word is correct?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="spell22" value="a" />Recieve
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell22" value="b" />Receive
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell22" value="c" />Receeve
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell22" value="d" />Recive
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="spell" data-correct="c">
+        <p>23. Choose the correctly spelled word.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="spell23" value="a" />Enviroment</label
+          >
+          <label class="option"
+            ><input type="radio" name="spell23" value="b" />Envirunment
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell23" value="c" />Environment
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell23" value="d" />Envirenment
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="spell" data-correct="c">
+        <p>24. Which spelling is correct?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="spell24" value="a" />Priviledge
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell24" value="b" />Privelege
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell24" value="c" />Privilege
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell24" value="d" />Previlage
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="spell" data-correct="c">
+        <p>25. Choose the correct spelling.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="spell25" value="a" />Persue
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell25" value="b" />Persu
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell25" value="c" />Pursue
+          </label>
+          <label class="option"
+            ><input type="radio" name="spell25" value="d" />Pursu
+          </label>
+        </div>
+      </div>
+
+      <h2>Part IV – Sentence Completion (10 items)</h2>
+      <div class="question" data-section="sentence" data-correct="a">
+        <p>26. The officer is known for his ___ in duty.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence26" value="a" />honesty
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence26" value="b" />dishonest
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence26" value="c" />dishonesty
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence26" value="d" />cruel
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="c">
+        <p>27. She will ___ her homework before going out</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence27" value="a" />finishes
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence27" value="b" />finished
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence27" value="c" />finish
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence27" value="d" />finishing
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="d">
+        <p>28. Police officers must always uphold the ___ of the law.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence28" value="a" />rule
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence28" value="b" />spirit
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence28" value="c" />letter
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence28" value="d" />integrity
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="c">
+        <p>29. The students listened ___ to their teacher.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence29" value="a" />attentive
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence29" value="b" />attention
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence29" value="c" />attentively
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence29" value="d" />attends
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="a">
+        <p>30. We must ___ our environment.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence30" value="a" />protect
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence30" value="b" />protects
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence30" value="c" />protecting
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence30" value="d" />protected
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="a">
+        <p>31. He was absent ___ he was sick.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence31" value="a" />because
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence31" value="b" />although
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence31" value="c" />but
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence31" value="d" />so
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="b">
+        <p>32. The witness ___ the crime last night.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence32" value="a" />see
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence32" value="b" />saw
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence32" value="c" />seeing
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence32" value="d" />seen
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="c">
+        <p>33. The soldiers fought bravely ___ their country.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence33" value="a" />of
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence33" value="b" />to
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence33" value="c" />for
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence33" value="d" />in
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="b">
+        <p>34. This road is ___ than the other one.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence34" value="a" />wide
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence34" value="b" />wider
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence34" value="c" />widest
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence34" value="d" />most wide
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="sentence" data-correct="a">
+        <p>35. The suspect did not ___ the crime.</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="sentence35" value="a" /> admit
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence35" value="b" /> admits
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence35" value="c" /> admitted
+          </label>
+          <label class="option"
+            ><input type="radio" name="sentence35" value="d" /> admitting
+          </label>
+        </div>
+      </div>
+
+      <h2>Part V – Reading Comprehension (5 items)</h2>
+      <p><b>Passage 1 (Q36-37): </b></p>
+      <p>
+        Policemen are tasked with maintaining peace and order in society. They
+        are expected to be disciplined, honest, and respectful in carrying out
+        their duties.
+      </p>
+      <div class="question" data-section="comprehension" data-correct="b">
+        <p>36. What is the main responsibility of policemen?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="compre36" value="a" /> To punish people
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre36" value="b" /> To maintain peace
+            and order
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre36" value="c" /> To run the
+            government
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre36" value="d" /> To collect taxes
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="comprehension" data-correct="b">
+        <p>37. Based on the passage, policemen should be:</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="compre37" value="a" /> Rich and powerful
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre37" value="b" /> Disciplined and
+            honest
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre37" value="c" /> Strong and wealthy
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre37" value="d" /> Intelligent and
+            famous
+          </label>
+        </div>
+      </div>
+
+      <p><b>Passage 2 (Q38-40): </b></p>
+      <p>
+        Flooding is a major problem in many cities in the Philippines. It is
+        often caused by heavy rains, clogged drainage, and improper waste
+        disposal.
+      </p>
+      <div class="question" data-section="comprehension" data-correct="b">
+        <p>38. What is the main problem discussed in the passage?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="compre38" value="a" /> Typhoons
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre38" value="b" /> Flooding
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre38" value="c" /> Garbage collection
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre38" value="d" /> Heavy traffic
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="comprehension" data-correct="c">
+        <p>39. One cause of flooding mentioned is:</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="compre39" value="a" /> Good drainage
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre39" value="b" /> Proper waste
+            disposal
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre39" value="c" /> Heavy rains
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre39" value="d" /> Clean streets
+          </label>
+        </div>
+      </div>
+      <div class="question" data-section="comprehension" data-correct="a">
+        <p>40. What can improper waste disposal lead to?</p>
+        <div class="options">
+          <label class="option"
+            ><input type="radio" name="compre40" value="a" /> Clogged drainage
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre40" value="b" /> Wider roads
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre40" value="c" /> More jobs
+          </label>
+          <label class="option"
+            ><input type="radio" name="compre40" value="d" /> Clear rivers
+          </label>
+        </div>
+      </div>
+      <button id="submitQuiz">Submit Quiz</button>
+    </form>
+
+    <script>
+      let totalTime = 40 * 60;
+      const timerEl = document.getElementById("timer");
+      let timerStarted = false;
+      let timerInterval;
+
+      function updateTimer() {
+        let minutes = Math.floor(totalTime / 60);
+        let seconds = totalTime % 60;
+        timerEl.textContent = `${minutes}:${
+          seconds < 10 ? "0" + seconds : seconds
+        }`;
+
+        if (totalTime <= 0) {
+          clearInterval(timerInterval);
+          timerEl.textContent = "Time’s up!";
+          alert("Time's up! Your quiz will be submitted.");
+          document.getElementById("quizForm").submit();
+        }
+        totalTime--;
+      }
+
+      function startTimer() {
+        if (!timerStarted) {
+          timerStarted = true;
+          updateTimer();
+          timerInterval = setInterval(updateTimer, 1000);
+        }
+      }
+
+      document
+        .querySelectorAll("#quizForm input[type=radio]")
+        .forEach((input) => {
+          input.addEventListener("change", startTimer);
+        });
+
+      const modeToggle = document.getElementById("modeToggle");
+      modeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        if (document.body.classList.contains("dark-mode")) {
+          modeToggle.textContent = "☀️ Light Mode";
+        } else {
+          modeToggle.textContent = "🌙 Dark Mode";
+        }
+      });
+      document
+        .getElementById("submitQuiz")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // stop page reload
+
+          const sections = [
+            "Vocabulary",
+            "Grammar",
+            "Spelling",
+            "Sentence Completion",
+            "Reading Comprehension",
+          ];
+
+          let results = [];
+          let totalCorrect = 0;
+          let totalQuestions = 0;
+
+          sections.forEach((section) => {
+            const questions = document.querySelectorAll(
+              `[data-section="${section}"]`
+            );
+            let correct = 0;
+
+            questions.forEach((q) => {
+              const correctAnswer = q.dataset.correct;
+              const selected = q.querySelector("input[type=radio]:checked");
+              if (selected && selected.value === correctAnswer) {
+                correct++;
+              }
+            });
+
+            results.push({
+              section: section,
+              correct: correct,
+              total: questions.length,
+            });
+
+            totalCorrect += correct;
+            totalQuestions += questions.length;
+          });
+
+          const percentage = Math.round((totalCorrect / totalQuestions) * 100);
+
+          let finalResults = {
+            sections: results,
+            totalCorrect,
+            totalQuestions,
+            percentage,
+          };
+
+          localStorage.setItem("quizResults", JSON.stringify(finalResults));
+          window.location.href = "napolcom_quiz_verbal_results.html";
+        });
+    </script>
+  </body>
+</html>
